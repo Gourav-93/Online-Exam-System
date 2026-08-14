@@ -84,8 +84,18 @@ function requireAuth(role = null) {
         return;
     }
 
-    if (role && user.role !== role) {
-        if (user.role === 'ADMIN') {
+    let userRole = user.role;
+    if (userRole && userRole.startsWith('ROLE_')) {
+        userRole = userRole.substring(5);
+    }
+
+    let requiredRole = role;
+    if (requiredRole && requiredRole.startsWith('ROLE_')) {
+        requiredRole = requiredRole.substring(5);
+    }
+
+    if (requiredRole && userRole !== requiredRole) {
+        if (userRole === 'ADMIN') {
             window.location.href = 'admin.html';
         } else {
             window.location.href = 'student.html';

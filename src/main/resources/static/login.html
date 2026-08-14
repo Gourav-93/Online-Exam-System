@@ -48,7 +48,11 @@
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('user', JSON.stringify({ email: data.email, role: data.role }));
                 
-                if (data.role === 'ADMIN') {
+                let role = data.role;
+                if (role && role.startsWith('ROLE_')) {
+                    role = role.substring(5);
+                }
+                if (role === 'ADMIN') {
                     window.location.href = 'admin.html';
                 } else {
                     window.location.href = 'student.html';
