@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam - Online Exam System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .option-btn {
+            width: 100%;
+            text-align: left;
+            padding: 1rem;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: var(--btn-radius);
+            color: var(--text-main);
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+        .option-btn:hover {
+            border-color: rgba(148, 163, 184, 0.5);
+            background: rgba(51, 65, 85, 0.5);
+        }
+        .option-btn.selected {
+            border-color: var(--primary-500);
+            background: rgba(59, 130, 246, 0.1);
+        }
+        .opt-letter {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(51, 65, 85, 0.8);
+            border-radius: 6px;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+        .option-btn.selected .opt-letter {
+            background: var(--primary-500);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="header" style="padding: 1rem 2rem; background: var(--bg-card); position: sticky; top: 0; z-index: 100; margin-bottom: 2rem;">
+        <h2 style="font-size: 1.2rem;">Exam in Progress</h2>
+        <div id="timer-display" style="font-size: 0.9rem; color: var(--text-muted); background: rgba(0,0,0,0.2); padding: 0.4rem 1rem; border-radius: 20px;">
+            Time left: Loading...
+        </div>
+    </div>
+
+    <div class="container animate-fade-in" style="max-width: 800px;">
+        <div style="margin-bottom: 2rem;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                <span id="progress-text">Loading...</span>
+            </div>
+            <div class="progress-bg">
+                <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <div id="exam-container" class="card" style="margin-bottom: 2rem; min-height: 400px; display: flex; flex-direction: column;">
+            <div id="question-content" style="flex: 1;">
+                <!-- Question injected here -->
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);">
+                <button id="prev-btn" class="btn btn-outline" onclick="prevQuestion()" disabled>Previous</button>
+                <button id="next-btn" class="btn btn-primary" onclick="nextQuestion()">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/exam.js"></script>
+</body>
+</html>

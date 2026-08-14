@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result - Online Exam System</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="center-flex" style="position: relative; overflow: hidden;">
+    
+    <div id="result-content" class="container" style="max-width: 500px; width: 100%;">
+        <!-- Result injected here -->
+        <div class="center-flex">
+            <div style="width: 40px; height: 40px; border: 4px solid var(--border-color); border-top-color: var(--primary-500); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+        </div>
+    </div>
+
+    <style>
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+    </style>
+    <script src="js/api.js"></script>
+    <script src="js/result.js"></script>
+</body>
+</html>

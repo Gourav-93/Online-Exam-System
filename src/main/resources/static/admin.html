@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Online Exam System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .sidebar { width: 250px; background: var(--bg-card); border-right: 1px solid var(--border-color); height: 100vh; position: fixed; left: 0; top: 0; padding: 2rem 0; }
+        .sidebar-item { padding: 1rem 2rem; color: var(--text-muted); cursor: pointer; transition: var(--transition); border-left: 3px solid transparent; }
+        .sidebar-item:hover, .sidebar-item.active { background: rgba(59, 130, 246, 0.1); color: var(--text-main); border-left-color: var(--primary-500); }
+        .main-content { margin-left: 250px; padding: 2rem; width: calc(100% - 250px); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease forwards; }
+        
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); z-index: 1000; align-items: center; justify-content: center; }
+        .modal.active { display: flex; animation: fadeIn 0.2s ease forwards; }
+        .modal-content { background: var(--bg-card); padding: 2rem; border-radius: var(--card-radius); width: 100%; max-width: 500px; border: 1px solid var(--border-color); }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div style="padding: 0 2rem; margin-bottom: 2rem;">
+            <h2 style="color: var(--primary-500); font-size: 1.5rem;">Admin Panel</h2>
+        </div>
+        <div class="sidebar-item active" onclick="switchTab('dashboard')">Dashboard</div>
+        <div class="sidebar-item" onclick="switchTab('users')">Manage Users</div>
+        <div class="sidebar-item" onclick="switchTab('exams')">Manage Exams</div>
+        <div class="sidebar-item" onclick="switchTab('results')">View Results</div>
+        <div class="sidebar-item" style="position: absolute; bottom: 2rem; width: 100%; border-left: none; color: var(--danger);" onclick="logout()">Logout</div>
+    </div>
+
+    <div class="main-content">
+        <!-- Dashboard Tab -->
+        <div id="tab-dashboard" class="tab-content active">
+            <h2 style="margin-bottom: 2rem;">Overview Analytics</h2>
+            <div class="grid grid-cols-4" style="margin-bottom: 2rem;">
+                <div class="card">
+                    <p class="text-muted">Total Users</p>
+                    <h2 id="stat-users" style="font-size: 2rem; color: var(--primary-500)">0</h2>
+                </div>
+                <div class="card">
+                    <p class="text-muted">Total Exams</p>
+                    <h2 id="stat-exams" style="font-size: 2rem; color: var(--success)">0</h2>
+                </div>
+                <div class="card">
+                    <p class="text-muted">Total Results</p>
+                    <h2 id="stat-results" style="font-size: 2rem; color: var(--warning)">0</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Users Tab -->
+        <div id="tab-users" class="tab-content">
+            <h2 style="margin-bottom: 2rem;">Manage Users</h2>
+            <div class="card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-table-body">
+                        <!-- Users injected here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Exams Tab -->
+        <div id="tab-exams" class="tab-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2>Manage Exams</h2>
+                <button class="btn btn-primary" onclick="openExamModal()">+ Create Exam</button>
+            </div>
+            <div class="card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Duration (m)</th>
+                            <th>Questions</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="exams-table-body">
+                        <!-- Exams injected here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Results Tab -->
+        <div id="tab-results" class="tab-content">
+            <h2 style="margin-bottom: 2rem;">All Exam Results</h2>
+            <div class="card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Student</th>
+                            <th>Exam</th>
+                            <th>Score</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="results-table-body">
+                        <!-- Results injected here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Exam Modal -->
+    <div id="exam-modal" class="modal">
+        <div class="modal-content">
+            <h3 style="margin-bottom: 1.5rem;">Create New Exam</h3>
+            <form id="create-exam-form">
+                <div class="input-group">
+                    <label>Exam Title</label>
+                    <input type="text" id="exam-title" required>
+                </div>
+                <div class="input-group">
+                    <label>Description</label>
+                    <input type="text" id="exam-desc" required>
+                </div>
+                <div class="input-group">
+                    <label>Duration (Minutes)</label>
+                    <input type="number" id="exam-duration" value="30" required>
+                </div>
+                <div class="input-group">
+                    <label>Passing Marks</label>
+                    <input type="number" id="exam-passing" value="10" required>
+                </div>
+                <div class="input-group">
+                    <label>Total Questions</label>
+                    <input type="number" id="exam-totalq" value="10" required>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="button" class="btn btn-outline" style="flex: 1;" onclick="closeExamModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

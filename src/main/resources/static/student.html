@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Online Exam System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .grid-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .grid-charts { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+        @media(max-width: 768px) { .grid-charts { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div id="loading" class="center-flex">
+        <div style="width: 40px; height: 40px; border: 4px solid var(--border-color); border-top-color: var(--primary-500); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+    </div>
+    
+    <div id="dashboard-content" style="display: none; padding: 2rem; max-width: 1200px; margin: 0 auto; width: 100%;" class="animate-fade-in">
+        <div class="header">
+            <div>
+                <h1 style="font-size: 2rem; margin-bottom: 0.2rem;">Welcome, <span id="user-email" class="text-primary"></span></h1>
+                <p class="text-muted">Here's your learning progress</p>
+            </div>
+            <button id="logout-btn" class="btn btn-outline">Logout</button>
+        </div>
+
+        <div class="grid-stats">
+            <div class="card flex" style="display: flex; align-items: center; gap: 1rem;">
+                <div class="stat-icon blue" style="margin: 0;">📚</div>
+                <div>
+                    <p class="text-muted" style="font-size: 0.9rem;">Total Exams</p>
+                    <h2 id="stat-total" style="font-size: 1.8rem;">0</h2>
+                </div>
+            </div>
+            <div class="card flex" style="display: flex; align-items: center; gap: 1rem;">
+                <div class="stat-icon green" style="margin: 0;">✅</div>
+                <div>
+                    <p class="text-muted" style="font-size: 0.9rem;">Attempted</p>
+                    <h2 id="stat-attempted" style="font-size: 1.8rem;">0</h2>
+                </div>
+            </div>
+            <div class="card flex" style="display: flex; align-items: center; gap: 1rem;">
+                <div class="stat-icon orange" style="margin: 0;">🏆</div>
+                <div>
+                    <p class="text-muted" style="font-size: 0.9rem;">Average Score</p>
+                    <h2 id="stat-avg" style="font-size: 1.8rem;">0</h2>
+                </div>
+            </div>
+            <div class="card flex" style="display: flex; align-items: center; gap: 1rem;">
+                <div class="stat-icon red" style="margin: 0;">🎯</div>
+                <div>
+                    <p class="text-muted" style="font-size: 0.9rem;">Pass Rate</p>
+                    <h2 id="stat-pass" style="font-size: 1.8rem;">0%</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-charts">
+            <div class="card">
+                <h3 style="margin-bottom: 1.5rem;">Score Trend (Last 5)</h3>
+                <div class="chart-container">
+                    <canvas id="line-chart"></canvas>
+                </div>
+            </div>
+            <div class="card">
+                <h3 style="margin-bottom: 1.5rem;">Performance</h3>
+                <div class="chart-container">
+                    <canvas id="pie-chart"></canvas>
+                </div>
+                <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1rem; font-size: 0.9rem;">
+                    <span style="display: flex; align-items: center; gap: 0.5rem;"><div style="width: 12px; height: 12px; border-radius: 50%; background: var(--success);"></div> Pass</span>
+                    <span style="display: flex; align-items: center; gap: 0.5rem;"><div style="width: 12px; height: 12px; border-radius: 50%; background: var(--danger);"></div> Fail</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="margin-bottom: 1.5rem;">Available Exams</h3>
+            <div id="exams-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                <!-- Exams injected here -->
+            </div>
+        </div>
+    </div>
+
+    <style>
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+    </style>
+    <script src="js/api.js"></script>
+    <script src="js/student.js"></script>
+</body>
+</html>
